@@ -1,0 +1,955 @@
+ARM GAS  C:\Users\ajs5433\AppData\Local\Temp\ccpvKee3.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"main.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.comm	InterruptCnt,1,1
+  19              		.global	echo
+  20              		.bss
+  21              		.align	2
+  22              		.type	echo, %object
+  23              		.size	echo, 4
+  24              	echo:
+  25 0000 00000000 		.space	4
+  26              		.global	min
+  27              		.data
+  28              		.align	2
+  29              		.type	min, %object
+  30              		.size	min, 4
+  31              	min:
+  32 0000 FFFFFFFF 		.word	-1
+  33              		.global	max
+  34              		.bss
+  35              		.align	2
+  36              		.type	max, %object
+  37              		.size	max, 4
+  38              	max:
+  39 0004 00000000 		.space	4
+  40              		.section	.text.start_echo_IRR_Interrupt,"ax",%progbits
+  41              		.align	2
+  42              		.global	start_echo_IRR_Interrupt
+  43              		.thumb
+  44              		.thumb_func
+  45              		.type	start_echo_IRR_Interrupt, %function
+  46              	start_echo_IRR_Interrupt:
+  47              	.LFB56:
+  48              		.file 1 ".\\main.c"
+   1:.\main.c      **** /********************************************************************************
+   2:.\main.c      **** * File Name: main.c
+   3:.\main.c      **** *
+   4:.\main.c      **** * Version : 1.00
+   5:.\main.c      **** *
+   6:.\main.c      **** * Description: 
+   7:.\main.c      **** *  This is a source code for example project of 16 bit Timer UDB Block.
+   8:.\main.c      **** *
+   9:.\main.c      **** * Test Result:
+ARM GAS  C:\Users\ajs5433\AppData\Local\Temp\ccpvKee3.s 			page 2
+
+
+  10:.\main.c      **** *  Watch capture output on P0_0, tc output on P0_1, and Period, Compare and 
+  11:.\main.c      **** *  Count value on LCD.
+  12:.\main.c      **** *
+  13:.\main.c      **** ********************************************************************************
+  14:.\main.c      **** * Copyright 2012, Cypress Semiconductor Corporation. All rights reserved.
+  15:.\main.c      **** * This software is owned by Cypress Semiconductor Corporation and is protected
+  16:.\main.c      **** * by and subject to worldwide patent and copyright laws and treaties.
+  17:.\main.c      **** * Therefore, you may use this software only as provided in the license agreement
+  18:.\main.c      **** * accompanying the software package from which you obtained this software.
+  19:.\main.c      **** * CYPRESS AND ITS SUPPLIERS MAKE NO WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  20:.\main.c      **** * WITH REGARD TO THIS SOFTWARE, INCLUDING, BUT NOT LIMITED TO, NONINFRINGEMENT,
+  21:.\main.c      **** * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+  22:.\main.c      **** *******************************************************************************/
+  23:.\main.c      **** 
+  24:.\main.c      **** #include <device.h>
+  25:.\main.c      **** #include <end_echo_IRR.h>
+  26:.\main.c      **** #include <Echo_Timer_ISR.h>
+  27:.\main.c      **** #include <Echo_Timer.h>
+  28:.\main.c      **** #include <start_echo_IRR.h>
+  29:.\main.c      **** #include <stdio.h>
+  30:.\main.c      **** #include <time.h>
+  31:.\main.c      **** 
+  32:.\main.c      **** 
+  33:.\main.c      **** #define max_32b_int 4294967295u
+  34:.\main.c      **** 
+  35:.\main.c      **** 
+  36:.\main.c      **** uint8 InterruptCnt;
+  37:.\main.c      **** uint32 echo=0;
+  38:.\main.c      **** uint32 min = max_32b_int; 
+  39:.\main.c      **** uint32 max =0;
+  40:.\main.c      **** 
+  41:.\main.c      **** CY_ISR(start_echo_IRR_Interrupt)
+  42:.\main.c      **** {
+  49              		.loc 1 42 0
+  50              		.cfi_startproc
+  51              		@ args = 0, pretend = 0, frame = 0
+  52              		@ frame_needed = 1, uses_anonymous_args = 0
+  53 0000 80B5     		push	{r7, lr}
+  54              	.LCFI0:
+  55              		.cfi_def_cfa_offset 8
+  56              		.cfi_offset 7, -8
+  57              		.cfi_offset 14, -4
+  58 0002 00AF     		add	r7, sp, #0
+  59              	.LCFI1:
+  60              		.cfi_def_cfa_register 7
+  43:.\main.c      ****     start_echo_IRR_ClearPending();
+  61              		.loc 1 43 0
+  62 0004 FFF7FEFF 		bl	start_echo_IRR_ClearPending
+  44:.\main.c      ****     
+  45:.\main.c      ****     Echo_Timer_Stop();
+  63              		.loc 1 45 0
+  64 0008 FFF7FEFF 		bl	Echo_Timer_Stop
+  46:.\main.c      ****     Echo_Timer_Init();
+  65              		.loc 1 46 0
+  66 000c FFF7FEFF 		bl	Echo_Timer_Init
+  47:.\main.c      ****     Echo_Timer_Start();
+  67              		.loc 1 47 0
+ARM GAS  C:\Users\ajs5433\AppData\Local\Temp\ccpvKee3.s 			page 3
+
+
+  68 0010 FFF7FEFF 		bl	Echo_Timer_Start
+  48:.\main.c      **** }
+  69              		.loc 1 48 0
+  70 0014 80BD     		pop	{r7, pc}
+  71              		.cfi_endproc
+  72              	.LFE56:
+  73              		.size	start_echo_IRR_Interrupt, .-start_echo_IRR_Interrupt
+  74 0016 00BF     		.section	.text.end_echo_IRR_Interrupt,"ax",%progbits
+  75              		.align	2
+  76              		.global	end_echo_IRR_Interrupt
+  77              		.thumb
+  78              		.thumb_func
+  79              		.type	end_echo_IRR_Interrupt, %function
+  80              	end_echo_IRR_Interrupt:
+  81              	.LFB57:
+  49:.\main.c      **** 
+  50:.\main.c      **** 
+  51:.\main.c      **** CY_ISR(end_echo_IRR_Interrupt)
+  52:.\main.c      **** {
+  82              		.loc 1 52 0
+  83              		.cfi_startproc
+  84              		@ args = 0, pretend = 0, frame = 0
+  85              		@ frame_needed = 1, uses_anonymous_args = 0
+  86 0000 80B5     		push	{r7, lr}
+  87              	.LCFI2:
+  88              		.cfi_def_cfa_offset 8
+  89              		.cfi_offset 7, -8
+  90              		.cfi_offset 14, -4
+  91 0002 00AF     		add	r7, sp, #0
+  92              	.LCFI3:
+  93              		.cfi_def_cfa_register 7
+  53:.\main.c      ****     end_echo_IRR_ClearPending();    
+  94              		.loc 1 53 0
+  95 0004 FFF7FEFF 		bl	end_echo_IRR_ClearPending
+  54:.\main.c      ****     echo = Echo_Timer_ReadCounter();
+  96              		.loc 1 54 0
+  97 0008 FFF7FEFF 		bl	Echo_Timer_ReadCounter
+  98 000c 0246     		mov	r2, r0
+  99 000e 40F20003 		movw	r3, #:lower16:echo
+ 100 0012 C0F20003 		movt	r3, #:upper16:echo
+ 101 0016 1A60     		str	r2, [r3, #0]
+  55:.\main.c      ****     
+  56:.\main.c      ****     Echo_Timer_Stop();
+ 102              		.loc 1 56 0
+ 103 0018 FFF7FEFF 		bl	Echo_Timer_Stop
+  57:.\main.c      **** }
+ 104              		.loc 1 57 0
+ 105 001c 80BD     		pop	{r7, pc}
+ 106              		.cfi_endproc
+ 107              	.LFE57:
+ 108              		.size	end_echo_IRR_Interrupt, .-end_echo_IRR_Interrupt
+ 109 001e 00BF     		.section	.rodata
+ 110              		.align	2
+ 111              	.LC0:
+ 112 0000 544D522D 		.ascii	"TMR-16\000"
+ 112      313600
+ 113 0007 00       		.section	.text.main,"ax",%progbits
+ARM GAS  C:\Users\ajs5433\AppData\Local\Temp\ccpvKee3.s 			page 4
+
+
+ 114              		.align	2
+ 115              		.global	main
+ 116              		.thumb
+ 117              		.thumb_func
+ 118              		.type	main, %function
+ 119              	main:
+ 120              	.LFB58:
+  58:.\main.c      **** 
+  59:.\main.c      **** 
+  60:.\main.c      **** 
+  61:.\main.c      **** /*******************************************************************************
+  62:.\main.c      **** * Function Name: main
+  63:.\main.c      **** ********************************************************************************
+  64:.\main.c      **** *
+  65:.\main.c      **** * Summary:
+  66:.\main.c      **** * Main function performs following functions:
+  67:.\main.c      **** * 1: Enables the clock
+  68:.\main.c      **** * 2: Start the Timer
+  69:.\main.c      **** * 3: Initializes the LCD
+  70:.\main.c      **** * 4: Print Period, capture, counter value on LCD
+  71:.\main.c      **** * 
+  72:.\main.c      **** * Parameters:
+  73:.\main.c      **** *  None.
+  74:.\main.c      **** *
+  75:.\main.c      **** * Return:
+  76:.\main.c      **** *  None.
+  77:.\main.c      **** *
+  78:.\main.c      **** *******************************************************************************/
+  79:.\main.c      **** int main()
+  80:.\main.c      **** {   
+ 121              		.loc 1 80 0
+ 122              		.cfi_startproc
+ 123              		@ args = 0, pretend = 0, frame = 0
+ 124              		@ frame_needed = 1, uses_anonymous_args = 0
+ 125 0000 80B5     		push	{r7, lr}
+ 126              	.LCFI4:
+ 127              		.cfi_def_cfa_offset 8
+ 128              		.cfi_offset 7, -8
+ 129              		.cfi_offset 14, -4
+ 130 0002 00AF     		add	r7, sp, #0
+ 131              	.LCFI5:
+ 132              		.cfi_def_cfa_register 7
+  81:.\main.c      ****     /* Enable the global interrupt */
+  82:.\main.c      ****     CyGlobalIntEnable;
+ 133              		.loc 1 82 0
+ 134              	@ 82 ".\main.c" 1
+ 135 0004 62B6     		CPSIE   i
+ 136              	@ 0 "" 2
+  83:.\main.c      ****     
+  84:.\main.c      ****     /* 1 - Enable the Interrupt component connected to Timer interrupt */
+  85:.\main.c      ****     /* 2 - Start the components */
+  86:.\main.c      **** 
+  87:.\main.c      ****     Trigger_Timer_Start();
+ 137              		.loc 1 87 0
+ 138              		.thumb
+ 139 0006 FFF7FEFF 		bl	Trigger_Timer_Start
+  88:.\main.c      ****     
+ARM GAS  C:\Users\ajs5433\AppData\Local\Temp\ccpvKee3.s 			page 5
+
+
+  89:.\main.c      ****     start_echo_IRR_StartEx(start_echo_IRR_Interrupt);
+ 140              		.loc 1 89 0
+ 141 000a 40F20000 		movw	r0, #:lower16:start_echo_IRR_Interrupt
+ 142 000e C0F20000 		movt	r0, #:upper16:start_echo_IRR_Interrupt
+ 143 0012 FFF7FEFF 		bl	start_echo_IRR_StartEx
+  90:.\main.c      ****     start_echo_IRR_Start();
+ 144              		.loc 1 90 0
+ 145 0016 FFF7FEFF 		bl	start_echo_IRR_Start
+  91:.\main.c      ****     
+  92:.\main.c      ****     end_echo_IRR_StartEx(end_echo_IRR_Interrupt);
+ 146              		.loc 1 92 0
+ 147 001a 40F20000 		movw	r0, #:lower16:end_echo_IRR_Interrupt
+ 148 001e C0F20000 		movt	r0, #:upper16:end_echo_IRR_Interrupt
+ 149 0022 FFF7FEFF 		bl	end_echo_IRR_StartEx
+  93:.\main.c      ****     end_echo_IRR_Start();
+ 150              		.loc 1 93 0
+ 151 0026 FFF7FEFF 		bl	end_echo_IRR_Start
+  94:.\main.c      ****     
+  95:.\main.c      ****     //Echo_Timer_ISR_StartEx(Echo_Timer_ISR_Interrupt);
+  96:.\main.c      ****     //Echo_Timer_ISR_Start();
+  97:.\main.c      ****     
+  98:.\main.c      ****     /* Display TMR-16 on LCD */
+  99:.\main.c      ****     LCD_Start();
+ 152              		.loc 1 99 0
+ 153 002a FFF7FEFF 		bl	LCD_Start
+ 100:.\main.c      ****     LCD_Position(0u, 0u);
+ 154              		.loc 1 100 0
+ 155 002e 4FF00000 		mov	r0, #0
+ 156 0032 4FF00001 		mov	r1, #0
+ 157 0036 FFF7FEFF 		bl	LCD_Position
+ 101:.\main.c      ****     LCD_PrintString("TMR-16"); 
+ 158              		.loc 1 101 0
+ 159 003a 40F20000 		movw	r0, #:lower16:.LC0
+ 160 003e C0F20000 		movt	r0, #:upper16:.LC0
+ 161 0042 FFF7FEFF 		bl	LCD_PrintString
+ 162              	.L6:
+ 102:.\main.c      **** 
+ 103:.\main.c      ****     for(;;)
+ 104:.\main.c      ****     {
+ 105:.\main.c      ****         LCD_Position(0u, 0u);
+ 163              		.loc 1 105 0
+ 164 0046 4FF00000 		mov	r0, #0
+ 165 004a 4FF00001 		mov	r1, #0
+ 166 004e FFF7FEFF 		bl	LCD_Position
+ 106:.\main.c      ****         LCD_PrintInt16(echo/2u);
+ 167              		.loc 1 106 0
+ 168 0052 40F20003 		movw	r3, #:lower16:echo
+ 169 0056 C0F20003 		movt	r3, #:upper16:echo
+ 170 005a 1B68     		ldr	r3, [r3, #0]
+ 171 005c 4FEA5303 		lsr	r3, r3, #1
+ 172 0060 9BB2     		uxth	r3, r3
+ 173 0062 1846     		mov	r0, r3
+ 174 0064 FFF7FEFF 		bl	LCD_PrintInt16
+ 107:.\main.c      ****         
+ 108:.\main.c      ****         if (echo>max){
+ 175              		.loc 1 108 0
+ 176 0068 40F20003 		movw	r3, #:lower16:echo
+ARM GAS  C:\Users\ajs5433\AppData\Local\Temp\ccpvKee3.s 			page 6
+
+
+ 177 006c C0F20003 		movt	r3, #:upper16:echo
+ 178 0070 1A68     		ldr	r2, [r3, #0]
+ 179 0072 40F20003 		movw	r3, #:lower16:max
+ 180 0076 C0F20003 		movt	r3, #:upper16:max
+ 181 007a 1B68     		ldr	r3, [r3, #0]
+ 182 007c 9A42     		cmp	r2, r3
+ 183 007e 1AD9     		bls	.L4
+ 109:.\main.c      ****             max = echo;
+ 184              		.loc 1 109 0
+ 185 0080 40F20003 		movw	r3, #:lower16:echo
+ 186 0084 C0F20003 		movt	r3, #:upper16:echo
+ 187 0088 1A68     		ldr	r2, [r3, #0]
+ 188 008a 40F20003 		movw	r3, #:lower16:max
+ 189 008e C0F20003 		movt	r3, #:upper16:max
+ 190 0092 1A60     		str	r2, [r3, #0]
+ 110:.\main.c      ****             LCD_Position(0u, 8u);
+ 191              		.loc 1 110 0
+ 192 0094 4FF00000 		mov	r0, #0
+ 193 0098 4FF00801 		mov	r1, #8
+ 194 009c FFF7FEFF 		bl	LCD_Position
+ 111:.\main.c      ****             //LCD_PrintString("MAX: ");
+ 112:.\main.c      ****             //LCD_Position(0u, 12u);
+ 113:.\main.c      ****             LCD_PrintInt16(max/2u);
+ 195              		.loc 1 113 0
+ 196 00a0 40F20003 		movw	r3, #:lower16:max
+ 197 00a4 C0F20003 		movt	r3, #:upper16:max
+ 198 00a8 1B68     		ldr	r3, [r3, #0]
+ 199 00aa 4FEA5303 		lsr	r3, r3, #1
+ 200 00ae 9BB2     		uxth	r3, r3
+ 201 00b0 1846     		mov	r0, r3
+ 202 00b2 FFF7FEFF 		bl	LCD_PrintInt16
+ 203              	.L4:
+ 114:.\main.c      ****             //LCD_PrintInt32(max);
+ 115:.\main.c      ****         }
+ 116:.\main.c      ****         if (echo<min){
+ 204              		.loc 1 116 0
+ 205 00b6 40F20003 		movw	r3, #:lower16:echo
+ 206 00ba C0F20003 		movt	r3, #:upper16:echo
+ 207 00be 1A68     		ldr	r2, [r3, #0]
+ 208 00c0 40F20003 		movw	r3, #:lower16:min
+ 209 00c4 C0F20003 		movt	r3, #:upper16:min
+ 210 00c8 1B68     		ldr	r3, [r3, #0]
+ 211 00ca 9A42     		cmp	r2, r3
+ 212 00cc 1AD2     		bcs	.L5
+ 117:.\main.c      ****             min = echo;
+ 213              		.loc 1 117 0
+ 214 00ce 40F20003 		movw	r3, #:lower16:echo
+ 215 00d2 C0F20003 		movt	r3, #:upper16:echo
+ 216 00d6 1A68     		ldr	r2, [r3, #0]
+ 217 00d8 40F20003 		movw	r3, #:lower16:min
+ 218 00dc C0F20003 		movt	r3, #:upper16:min
+ 219 00e0 1A60     		str	r2, [r3, #0]
+ 118:.\main.c      ****             LCD_Position(1u, 8u);
+ 220              		.loc 1 118 0
+ 221 00e2 4FF00100 		mov	r0, #1
+ 222 00e6 4FF00801 		mov	r1, #8
+ 223 00ea FFF7FEFF 		bl	LCD_Position
+ARM GAS  C:\Users\ajs5433\AppData\Local\Temp\ccpvKee3.s 			page 7
+
+
+ 119:.\main.c      ****             //LCD_PrintString("MIN: ");
+ 120:.\main.c      ****             //LCD_Position(0u, 121u);
+ 121:.\main.c      ****             //LCD_PrintInt32(min);
+ 122:.\main.c      ****             LCD_PrintInt16(min/2u);
+ 224              		.loc 1 122 0
+ 225 00ee 40F20003 		movw	r3, #:lower16:min
+ 226 00f2 C0F20003 		movt	r3, #:upper16:min
+ 227 00f6 1B68     		ldr	r3, [r3, #0]
+ 228 00f8 4FEA5303 		lsr	r3, r3, #1
+ 229 00fc 9BB2     		uxth	r3, r3
+ 230 00fe 1846     		mov	r0, r3
+ 231 0100 FFF7FEFF 		bl	LCD_PrintInt16
+ 232              	.L5:
+ 123:.\main.c      ****         }
+ 124:.\main.c      **** 		CyDelay(100u);
+ 233              		.loc 1 124 0
+ 234 0104 4FF06400 		mov	r0, #100
+ 235 0108 FFF7FEFF 		bl	CyDelay
+ 125:.\main.c      ****     }
+ 236              		.loc 1 125 0
+ 237 010c 9BE7     		b	.L6
+ 238              		.cfi_endproc
+ 239              	.LFE58:
+ 240              		.size	main, .-main
+ 241 010e 00BF     		.text
+ 242              	.Letext0:
+ 243              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.0\\psoc creator\\import\\gnu_cs\\arm\\4
+ 244              		.file 3 "./Generated_Source/PSoC5/cytypes.h"
+ 245              		.file 4 "./Generated_Source/PSoC5/core_cm3.h"
+ 246              		.section	.debug_info,"",%progbits
+ 247              	.Ldebug_info0:
+ 248 0000 49010000 		.4byte	0x149
+ 249 0004 0200     		.2byte	0x2
+ 250 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 251 000a 04       		.byte	0x4
+ 252 000b 01       		.uleb128 0x1
+ 253 000c 3E000000 		.4byte	.LASF22
+ 254 0010 01       		.byte	0x1
+ 255 0011 92000000 		.4byte	.LASF23
+ 256 0015 EE000000 		.4byte	.LASF24
+ 257 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 258 001d 00000000 		.4byte	0
+ 259 0021 00000000 		.4byte	0
+ 260 0025 00000000 		.4byte	.Ldebug_line0
+ 261 0029 02       		.uleb128 0x2
+ 262 002a 01       		.byte	0x1
+ 263 002b 06       		.byte	0x6
+ 264 002c 61010000 		.4byte	.LASF0
+ 265 0030 02       		.uleb128 0x2
+ 266 0031 01       		.byte	0x1
+ 267 0032 08       		.byte	0x8
+ 268 0033 C5000000 		.4byte	.LASF1
+ 269 0037 02       		.uleb128 0x2
+ 270 0038 02       		.byte	0x2
+ 271 0039 05       		.byte	0x5
+ 272 003a 8C010000 		.4byte	.LASF2
+ 273 003e 02       		.uleb128 0x2
+ARM GAS  C:\Users\ajs5433\AppData\Local\Temp\ccpvKee3.s 			page 8
+
+
+ 274 003f 02       		.byte	0x2
+ 275 0040 07       		.byte	0x7
+ 276 0041 B2000000 		.4byte	.LASF3
+ 277 0045 03       		.uleb128 0x3
+ 278 0046 96010000 		.4byte	.LASF9
+ 279 004a 02       		.byte	0x2
+ 280 004b 4F       		.byte	0x4f
+ 281 004c 50000000 		.4byte	0x50
+ 282 0050 02       		.uleb128 0x2
+ 283 0051 04       		.byte	0x4
+ 284 0052 05       		.byte	0x5
+ 285 0053 E5000000 		.4byte	.LASF4
+ 286 0057 02       		.uleb128 0x2
+ 287 0058 04       		.byte	0x4
+ 288 0059 07       		.byte	0x7
+ 289 005a 3B010000 		.4byte	.LASF5
+ 290 005e 02       		.uleb128 0x2
+ 291 005f 08       		.byte	0x8
+ 292 0060 05       		.byte	0x5
+ 293 0061 00000000 		.4byte	.LASF6
+ 294 0065 02       		.uleb128 0x2
+ 295 0066 08       		.byte	0x8
+ 296 0067 07       		.byte	0x7
+ 297 0068 9B000000 		.4byte	.LASF7
+ 298 006c 04       		.uleb128 0x4
+ 299 006d 04       		.byte	0x4
+ 300 006e 05       		.byte	0x5
+ 301 006f 696E7400 		.ascii	"int\000"
+ 302 0073 02       		.uleb128 0x2
+ 303 0074 04       		.byte	0x4
+ 304 0075 07       		.byte	0x7
+ 305 0076 25000000 		.4byte	.LASF8
+ 306 007a 03       		.uleb128 0x3
+ 307 007b 87000000 		.4byte	.LASF10
+ 308 007f 03       		.byte	0x3
+ 309 0080 5B       		.byte	0x5b
+ 310 0081 30000000 		.4byte	0x30
+ 311 0085 03       		.uleb128 0x3
+ 312 0086 32000000 		.4byte	.LASF11
+ 313 008a 03       		.byte	0x3
+ 314 008b 5D       		.byte	0x5d
+ 315 008c 57000000 		.4byte	0x57
+ 316 0090 02       		.uleb128 0x2
+ 317 0091 04       		.byte	0x4
+ 318 0092 04       		.byte	0x4
+ 319 0093 86010000 		.4byte	.LASF12
+ 320 0097 02       		.uleb128 0x2
+ 321 0098 08       		.byte	0x8
+ 322 0099 04       		.byte	0x4
+ 323 009a 4D010000 		.4byte	.LASF13
+ 324 009e 02       		.uleb128 0x2
+ 325 009f 01       		.byte	0x1
+ 326 00a0 08       		.byte	0x8
+ 327 00a1 D3000000 		.4byte	.LASF14
+ 328 00a5 02       		.uleb128 0x2
+ 329 00a6 04       		.byte	0x4
+ 330 00a7 07       		.byte	0x7
+ARM GAS  C:\Users\ajs5433\AppData\Local\Temp\ccpvKee3.s 			page 9
+
+
+ 331 00a8 9E010000 		.4byte	.LASF15
+ 332 00ac 05       		.uleb128 0x5
+ 333 00ad 01       		.byte	0x1
+ 334 00ae 6D010000 		.4byte	.LASF16
+ 335 00b2 01       		.byte	0x1
+ 336 00b3 29       		.byte	0x29
+ 337 00b4 01       		.byte	0x1
+ 338 00b5 00000000 		.4byte	.LFB56
+ 339 00b9 16000000 		.4byte	.LFE56
+ 340 00bd 00000000 		.4byte	.LLST0
+ 341 00c1 01       		.byte	0x1
+ 342 00c2 05       		.uleb128 0x5
+ 343 00c3 01       		.byte	0x1
+ 344 00c4 0E000000 		.4byte	.LASF17
+ 345 00c8 01       		.byte	0x1
+ 346 00c9 33       		.byte	0x33
+ 347 00ca 01       		.byte	0x1
+ 348 00cb 00000000 		.4byte	.LFB57
+ 349 00cf 1E000000 		.4byte	.LFE57
+ 350 00d3 2C000000 		.4byte	.LLST1
+ 351 00d7 01       		.byte	0x1
+ 352 00d8 06       		.uleb128 0x6
+ 353 00d9 01       		.byte	0x1
+ 354 00da 39000000 		.4byte	.LASF18
+ 355 00de 01       		.byte	0x1
+ 356 00df 4F       		.byte	0x4f
+ 357 00e0 6C000000 		.4byte	0x6c
+ 358 00e4 00000000 		.4byte	.LFB58
+ 359 00e8 0E010000 		.4byte	.LFE58
+ 360 00ec 58000000 		.4byte	.LLST2
+ 361 00f0 01       		.byte	0x1
+ 362 00f1 07       		.uleb128 0x7
+ 363 00f2 54010000 		.4byte	.LASF19
+ 364 00f6 04       		.byte	0x4
+ 365 00f7 1606     		.2byte	0x616
+ 366 00f9 FF000000 		.4byte	0xff
+ 367 00fd 01       		.byte	0x1
+ 368 00fe 01       		.byte	0x1
+ 369 00ff 08       		.uleb128 0x8
+ 370 0100 45000000 		.4byte	0x45
+ 371 0104 09       		.uleb128 0x9
+ 372 0105 D8000000 		.4byte	.LASF20
+ 373 0109 01       		.byte	0x1
+ 374 010a 24       		.byte	0x24
+ 375 010b 7A000000 		.4byte	0x7a
+ 376 010f 01       		.byte	0x1
+ 377 0110 05       		.byte	0x5
+ 378 0111 03       		.byte	0x3
+ 379 0112 00000000 		.4byte	InterruptCnt
+ 380 0116 09       		.uleb128 0x9
+ 381 0117 8D000000 		.4byte	.LASF21
+ 382 011b 01       		.byte	0x1
+ 383 011c 25       		.byte	0x25
+ 384 011d 85000000 		.4byte	0x85
+ 385 0121 01       		.byte	0x1
+ 386 0122 05       		.byte	0x5
+ 387 0123 03       		.byte	0x3
+ARM GAS  C:\Users\ajs5433\AppData\Local\Temp\ccpvKee3.s 			page 10
+
+
+ 388 0124 00000000 		.4byte	echo
+ 389 0128 0A       		.uleb128 0xa
+ 390 0129 6D696E00 		.ascii	"min\000"
+ 391 012d 01       		.byte	0x1
+ 392 012e 26       		.byte	0x26
+ 393 012f 85000000 		.4byte	0x85
+ 394 0133 01       		.byte	0x1
+ 395 0134 05       		.byte	0x5
+ 396 0135 03       		.byte	0x3
+ 397 0136 00000000 		.4byte	min
+ 398 013a 0A       		.uleb128 0xa
+ 399 013b 6D617800 		.ascii	"max\000"
+ 400 013f 01       		.byte	0x1
+ 401 0140 27       		.byte	0x27
+ 402 0141 85000000 		.4byte	0x85
+ 403 0145 01       		.byte	0x1
+ 404 0146 05       		.byte	0x5
+ 405 0147 03       		.byte	0x3
+ 406 0148 00000000 		.4byte	max
+ 407 014c 00       		.byte	0
+ 408              		.section	.debug_abbrev,"",%progbits
+ 409              	.Ldebug_abbrev0:
+ 410 0000 01       		.uleb128 0x1
+ 411 0001 11       		.uleb128 0x11
+ 412 0002 01       		.byte	0x1
+ 413 0003 25       		.uleb128 0x25
+ 414 0004 0E       		.uleb128 0xe
+ 415 0005 13       		.uleb128 0x13
+ 416 0006 0B       		.uleb128 0xb
+ 417 0007 03       		.uleb128 0x3
+ 418 0008 0E       		.uleb128 0xe
+ 419 0009 1B       		.uleb128 0x1b
+ 420 000a 0E       		.uleb128 0xe
+ 421 000b 55       		.uleb128 0x55
+ 422 000c 06       		.uleb128 0x6
+ 423 000d 11       		.uleb128 0x11
+ 424 000e 01       		.uleb128 0x1
+ 425 000f 52       		.uleb128 0x52
+ 426 0010 01       		.uleb128 0x1
+ 427 0011 10       		.uleb128 0x10
+ 428 0012 06       		.uleb128 0x6
+ 429 0013 00       		.byte	0
+ 430 0014 00       		.byte	0
+ 431 0015 02       		.uleb128 0x2
+ 432 0016 24       		.uleb128 0x24
+ 433 0017 00       		.byte	0
+ 434 0018 0B       		.uleb128 0xb
+ 435 0019 0B       		.uleb128 0xb
+ 436 001a 3E       		.uleb128 0x3e
+ 437 001b 0B       		.uleb128 0xb
+ 438 001c 03       		.uleb128 0x3
+ 439 001d 0E       		.uleb128 0xe
+ 440 001e 00       		.byte	0
+ 441 001f 00       		.byte	0
+ 442 0020 03       		.uleb128 0x3
+ 443 0021 16       		.uleb128 0x16
+ 444 0022 00       		.byte	0
+ARM GAS  C:\Users\ajs5433\AppData\Local\Temp\ccpvKee3.s 			page 11
+
+
+ 445 0023 03       		.uleb128 0x3
+ 446 0024 0E       		.uleb128 0xe
+ 447 0025 3A       		.uleb128 0x3a
+ 448 0026 0B       		.uleb128 0xb
+ 449 0027 3B       		.uleb128 0x3b
+ 450 0028 0B       		.uleb128 0xb
+ 451 0029 49       		.uleb128 0x49
+ 452 002a 13       		.uleb128 0x13
+ 453 002b 00       		.byte	0
+ 454 002c 00       		.byte	0
+ 455 002d 04       		.uleb128 0x4
+ 456 002e 24       		.uleb128 0x24
+ 457 002f 00       		.byte	0
+ 458 0030 0B       		.uleb128 0xb
+ 459 0031 0B       		.uleb128 0xb
+ 460 0032 3E       		.uleb128 0x3e
+ 461 0033 0B       		.uleb128 0xb
+ 462 0034 03       		.uleb128 0x3
+ 463 0035 08       		.uleb128 0x8
+ 464 0036 00       		.byte	0
+ 465 0037 00       		.byte	0
+ 466 0038 05       		.uleb128 0x5
+ 467 0039 2E       		.uleb128 0x2e
+ 468 003a 00       		.byte	0
+ 469 003b 3F       		.uleb128 0x3f
+ 470 003c 0C       		.uleb128 0xc
+ 471 003d 03       		.uleb128 0x3
+ 472 003e 0E       		.uleb128 0xe
+ 473 003f 3A       		.uleb128 0x3a
+ 474 0040 0B       		.uleb128 0xb
+ 475 0041 3B       		.uleb128 0x3b
+ 476 0042 0B       		.uleb128 0xb
+ 477 0043 27       		.uleb128 0x27
+ 478 0044 0C       		.uleb128 0xc
+ 479 0045 11       		.uleb128 0x11
+ 480 0046 01       		.uleb128 0x1
+ 481 0047 12       		.uleb128 0x12
+ 482 0048 01       		.uleb128 0x1
+ 483 0049 40       		.uleb128 0x40
+ 484 004a 06       		.uleb128 0x6
+ 485 004b 9642     		.uleb128 0x2116
+ 486 004d 0C       		.uleb128 0xc
+ 487 004e 00       		.byte	0
+ 488 004f 00       		.byte	0
+ 489 0050 06       		.uleb128 0x6
+ 490 0051 2E       		.uleb128 0x2e
+ 491 0052 00       		.byte	0
+ 492 0053 3F       		.uleb128 0x3f
+ 493 0054 0C       		.uleb128 0xc
+ 494 0055 03       		.uleb128 0x3
+ 495 0056 0E       		.uleb128 0xe
+ 496 0057 3A       		.uleb128 0x3a
+ 497 0058 0B       		.uleb128 0xb
+ 498 0059 3B       		.uleb128 0x3b
+ 499 005a 0B       		.uleb128 0xb
+ 500 005b 49       		.uleb128 0x49
+ 501 005c 13       		.uleb128 0x13
+ARM GAS  C:\Users\ajs5433\AppData\Local\Temp\ccpvKee3.s 			page 12
+
+
+ 502 005d 11       		.uleb128 0x11
+ 503 005e 01       		.uleb128 0x1
+ 504 005f 12       		.uleb128 0x12
+ 505 0060 01       		.uleb128 0x1
+ 506 0061 40       		.uleb128 0x40
+ 507 0062 06       		.uleb128 0x6
+ 508 0063 9642     		.uleb128 0x2116
+ 509 0065 0C       		.uleb128 0xc
+ 510 0066 00       		.byte	0
+ 511 0067 00       		.byte	0
+ 512 0068 07       		.uleb128 0x7
+ 513 0069 34       		.uleb128 0x34
+ 514 006a 00       		.byte	0
+ 515 006b 03       		.uleb128 0x3
+ 516 006c 0E       		.uleb128 0xe
+ 517 006d 3A       		.uleb128 0x3a
+ 518 006e 0B       		.uleb128 0xb
+ 519 006f 3B       		.uleb128 0x3b
+ 520 0070 05       		.uleb128 0x5
+ 521 0071 49       		.uleb128 0x49
+ 522 0072 13       		.uleb128 0x13
+ 523 0073 3F       		.uleb128 0x3f
+ 524 0074 0C       		.uleb128 0xc
+ 525 0075 3C       		.uleb128 0x3c
+ 526 0076 0C       		.uleb128 0xc
+ 527 0077 00       		.byte	0
+ 528 0078 00       		.byte	0
+ 529 0079 08       		.uleb128 0x8
+ 530 007a 35       		.uleb128 0x35
+ 531 007b 00       		.byte	0
+ 532 007c 49       		.uleb128 0x49
+ 533 007d 13       		.uleb128 0x13
+ 534 007e 00       		.byte	0
+ 535 007f 00       		.byte	0
+ 536 0080 09       		.uleb128 0x9
+ 537 0081 34       		.uleb128 0x34
+ 538 0082 00       		.byte	0
+ 539 0083 03       		.uleb128 0x3
+ 540 0084 0E       		.uleb128 0xe
+ 541 0085 3A       		.uleb128 0x3a
+ 542 0086 0B       		.uleb128 0xb
+ 543 0087 3B       		.uleb128 0x3b
+ 544 0088 0B       		.uleb128 0xb
+ 545 0089 49       		.uleb128 0x49
+ 546 008a 13       		.uleb128 0x13
+ 547 008b 3F       		.uleb128 0x3f
+ 548 008c 0C       		.uleb128 0xc
+ 549 008d 02       		.uleb128 0x2
+ 550 008e 0A       		.uleb128 0xa
+ 551 008f 00       		.byte	0
+ 552 0090 00       		.byte	0
+ 553 0091 0A       		.uleb128 0xa
+ 554 0092 34       		.uleb128 0x34
+ 555 0093 00       		.byte	0
+ 556 0094 03       		.uleb128 0x3
+ 557 0095 08       		.uleb128 0x8
+ 558 0096 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\ajs5433\AppData\Local\Temp\ccpvKee3.s 			page 13
+
+
+ 559 0097 0B       		.uleb128 0xb
+ 560 0098 3B       		.uleb128 0x3b
+ 561 0099 0B       		.uleb128 0xb
+ 562 009a 49       		.uleb128 0x49
+ 563 009b 13       		.uleb128 0x13
+ 564 009c 3F       		.uleb128 0x3f
+ 565 009d 0C       		.uleb128 0xc
+ 566 009e 02       		.uleb128 0x2
+ 567 009f 0A       		.uleb128 0xa
+ 568 00a0 00       		.byte	0
+ 569 00a1 00       		.byte	0
+ 570 00a2 00       		.byte	0
+ 571              		.section	.debug_loc,"",%progbits
+ 572              	.Ldebug_loc0:
+ 573              	.LLST0:
+ 574 0000 00000000 		.4byte	.LFB56
+ 575 0004 02000000 		.4byte	.LCFI0
+ 576 0008 0200     		.2byte	0x2
+ 577 000a 7D       		.byte	0x7d
+ 578 000b 00       		.sleb128 0
+ 579 000c 02000000 		.4byte	.LCFI0
+ 580 0010 04000000 		.4byte	.LCFI1
+ 581 0014 0200     		.2byte	0x2
+ 582 0016 7D       		.byte	0x7d
+ 583 0017 08       		.sleb128 8
+ 584 0018 04000000 		.4byte	.LCFI1
+ 585 001c 16000000 		.4byte	.LFE56
+ 586 0020 0200     		.2byte	0x2
+ 587 0022 77       		.byte	0x77
+ 588 0023 08       		.sleb128 8
+ 589 0024 00000000 		.4byte	0
+ 590 0028 00000000 		.4byte	0
+ 591              	.LLST1:
+ 592 002c 00000000 		.4byte	.LFB57
+ 593 0030 02000000 		.4byte	.LCFI2
+ 594 0034 0200     		.2byte	0x2
+ 595 0036 7D       		.byte	0x7d
+ 596 0037 00       		.sleb128 0
+ 597 0038 02000000 		.4byte	.LCFI2
+ 598 003c 04000000 		.4byte	.LCFI3
+ 599 0040 0200     		.2byte	0x2
+ 600 0042 7D       		.byte	0x7d
+ 601 0043 08       		.sleb128 8
+ 602 0044 04000000 		.4byte	.LCFI3
+ 603 0048 1E000000 		.4byte	.LFE57
+ 604 004c 0200     		.2byte	0x2
+ 605 004e 77       		.byte	0x77
+ 606 004f 08       		.sleb128 8
+ 607 0050 00000000 		.4byte	0
+ 608 0054 00000000 		.4byte	0
+ 609              	.LLST2:
+ 610 0058 00000000 		.4byte	.LFB58
+ 611 005c 02000000 		.4byte	.LCFI4
+ 612 0060 0200     		.2byte	0x2
+ 613 0062 7D       		.byte	0x7d
+ 614 0063 00       		.sleb128 0
+ 615 0064 02000000 		.4byte	.LCFI4
+ARM GAS  C:\Users\ajs5433\AppData\Local\Temp\ccpvKee3.s 			page 14
+
+
+ 616 0068 04000000 		.4byte	.LCFI5
+ 617 006c 0200     		.2byte	0x2
+ 618 006e 7D       		.byte	0x7d
+ 619 006f 08       		.sleb128 8
+ 620 0070 04000000 		.4byte	.LCFI5
+ 621 0074 0E010000 		.4byte	.LFE58
+ 622 0078 0200     		.2byte	0x2
+ 623 007a 77       		.byte	0x77
+ 624 007b 08       		.sleb128 8
+ 625 007c 00000000 		.4byte	0
+ 626 0080 00000000 		.4byte	0
+ 627              		.section	.debug_aranges,"",%progbits
+ 628 0000 2C000000 		.4byte	0x2c
+ 629 0004 0200     		.2byte	0x2
+ 630 0006 00000000 		.4byte	.Ldebug_info0
+ 631 000a 04       		.byte	0x4
+ 632 000b 00       		.byte	0
+ 633 000c 0000     		.2byte	0
+ 634 000e 0000     		.2byte	0
+ 635 0010 00000000 		.4byte	.LFB56
+ 636 0014 16000000 		.4byte	.LFE56-.LFB56
+ 637 0018 00000000 		.4byte	.LFB57
+ 638 001c 1E000000 		.4byte	.LFE57-.LFB57
+ 639 0020 00000000 		.4byte	.LFB58
+ 640 0024 0E010000 		.4byte	.LFE58-.LFB58
+ 641 0028 00000000 		.4byte	0
+ 642 002c 00000000 		.4byte	0
+ 643              		.section	.debug_ranges,"",%progbits
+ 644              	.Ldebug_ranges0:
+ 645 0000 00000000 		.4byte	.LFB56
+ 646 0004 16000000 		.4byte	.LFE56
+ 647 0008 00000000 		.4byte	.LFB57
+ 648 000c 1E000000 		.4byte	.LFE57
+ 649 0010 00000000 		.4byte	.LFB58
+ 650 0014 0E010000 		.4byte	.LFE58
+ 651 0018 00000000 		.4byte	0
+ 652 001c 00000000 		.4byte	0
+ 653              		.section	.debug_line,"",%progbits
+ 654              	.Ldebug_line0:
+ 655 0000 4B010000 		.section	.debug_str,"MS",%progbits,1
+ 655      0200F900 
+ 655      00000201 
+ 655      FB0E0D00 
+ 655      01010101 
+ 656              	.LASF6:
+ 657 0000 6C6F6E67 		.ascii	"long long int\000"
+ 657      206C6F6E 
+ 657      6720696E 
+ 657      7400
+ 658              	.LASF17:
+ 659 000e 656E645F 		.ascii	"end_echo_IRR_Interrupt\000"
+ 659      6563686F 
+ 659      5F495252 
+ 659      5F496E74 
+ 659      65727275 
+ 660              	.LASF8:
+ 661 0025 756E7369 		.ascii	"unsigned int\000"
+ARM GAS  C:\Users\ajs5433\AppData\Local\Temp\ccpvKee3.s 			page 15
+
+
+ 661      676E6564 
+ 661      20696E74 
+ 661      00
+ 662              	.LASF11:
+ 663 0032 75696E74 		.ascii	"uint32\000"
+ 663      333200
+ 664              	.LASF18:
+ 665 0039 6D61696E 		.ascii	"main\000"
+ 665      00
+ 666              	.LASF22:
+ 667 003e 474E5520 		.ascii	"GNU C 4.7.3 20130312 (release) [ARM/embedded-4_7-br"
+ 667      4320342E 
+ 667      372E3320 
+ 667      32303133 
+ 667      30333132 
+ 668 0071 616E6368 		.ascii	"anch revision 196615]\000"
+ 668      20726576 
+ 668      6973696F 
+ 668      6E203139 
+ 668      36363135 
+ 669              	.LASF10:
+ 670 0087 75696E74 		.ascii	"uint8\000"
+ 670      3800
+ 671              	.LASF21:
+ 672 008d 6563686F 		.ascii	"echo\000"
+ 672      00
+ 673              	.LASF23:
+ 674 0092 2E5C6D61 		.ascii	".\\main.c\000"
+ 674      696E2E63 
+ 674      00
+ 675              	.LASF7:
+ 676 009b 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 676      206C6F6E 
+ 676      6720756E 
+ 676      7369676E 
+ 676      65642069 
+ 677              	.LASF3:
+ 678 00b2 73686F72 		.ascii	"short unsigned int\000"
+ 678      7420756E 
+ 678      7369676E 
+ 678      65642069 
+ 678      6E7400
+ 679              	.LASF1:
+ 680 00c5 756E7369 		.ascii	"unsigned char\000"
+ 680      676E6564 
+ 680      20636861 
+ 680      7200
+ 681              	.LASF14:
+ 682 00d3 63686172 		.ascii	"char\000"
+ 682      00
+ 683              	.LASF20:
+ 684 00d8 496E7465 		.ascii	"InterruptCnt\000"
+ 684      72727570 
+ 684      74436E74 
+ 684      00
+ 685              	.LASF4:
+ 686 00e5 6C6F6E67 		.ascii	"long int\000"
+ARM GAS  C:\Users\ajs5433\AppData\Local\Temp\ccpvKee3.s 			page 16
+
+
+ 686      20696E74 
+ 686      00
+ 687              	.LASF24:
+ 688 00ee 5C5C6D69 		.ascii	"\\\\mightor\\home\\fall2016\\ajs5433\\Documents\\PS"
+ 688      6768746F 
+ 688      725C686F 
+ 688      6D655C66 
+ 688      616C6C32 
+ 689 011a 6F432043 		.ascii	"oC Creator\\Timer02\\Timer02.cydsn\000"
+ 689      72656174 
+ 689      6F725C54 
+ 689      696D6572 
+ 689      30325C54 
+ 690              	.LASF5:
+ 691 013b 6C6F6E67 		.ascii	"long unsigned int\000"
+ 691      20756E73 
+ 691      69676E65 
+ 691      6420696E 
+ 691      7400
+ 692              	.LASF13:
+ 693 014d 646F7562 		.ascii	"double\000"
+ 693      6C6500
+ 694              	.LASF19:
+ 695 0154 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 695      52784275 
+ 695      66666572 
+ 695      00
+ 696              	.LASF0:
+ 697 0161 7369676E 		.ascii	"signed char\000"
+ 697      65642063 
+ 697      68617200 
+ 698              	.LASF16:
+ 699 016d 73746172 		.ascii	"start_echo_IRR_Interrupt\000"
+ 699      745F6563 
+ 699      686F5F49 
+ 699      52525F49 
+ 699      6E746572 
+ 700              	.LASF12:
+ 701 0186 666C6F61 		.ascii	"float\000"
+ 701      7400
+ 702              	.LASF2:
+ 703 018c 73686F72 		.ascii	"short int\000"
+ 703      7420696E 
+ 703      7400
+ 704              	.LASF9:
+ 705 0196 696E7433 		.ascii	"int32_t\000"
+ 705      325F7400 
+ 706              	.LASF15:
+ 707 019e 73697A65 		.ascii	"sizetype\000"
+ 707      74797065 
+ 707      00
+ 708              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.7.3 20130312 (release) [ARM/embedded-4_7-br
